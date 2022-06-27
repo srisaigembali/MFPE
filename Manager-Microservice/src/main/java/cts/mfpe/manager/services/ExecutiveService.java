@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import cts.mfpe.manager.entities.Customer;
 import cts.mfpe.manager.entities.Executive;
 
 @Service
@@ -15,9 +16,9 @@ public interface ExecutiveService {
 	
 	public List<Executive> getAllExecutivesByLocality(String locality);
 	
-	//public void assignExecutiveToCustomer();
+	public List<Customer> getAllCustomers();
 	
-	//public List<Customer> getAllCustomers();
+	public Customer getCustomerById(int id);
 	
-	//public Customer getCustomerById(int id);
+	public void assignExecutive(int executiveid, int customerid);
 }

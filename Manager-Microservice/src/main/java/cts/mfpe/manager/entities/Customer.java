@@ -1,16 +1,15 @@
-package cts.mfpe.manager.dto;
+package cts.mfpe.manager.entities;
+
+import javax.persistence.Embeddable;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
-@Getter
-@Setter
-@ToString
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Embeddable
 public class Customer {
 	private int id;
 	private String name;

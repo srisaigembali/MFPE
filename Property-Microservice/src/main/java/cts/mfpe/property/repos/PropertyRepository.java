@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import cts.mfpe.property.models.Property;
+import cts.mfpe.property.entities.Property;
 
 public interface PropertyRepository extends JpaRepository<Property, Integer> {
 

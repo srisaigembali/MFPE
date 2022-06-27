@@ -1,19 +1,23 @@
-package cts.mfpe.customer.models;
+package cts.mfpe.property.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
 @Data
 @Entity
-public class Requirement {
+public class Property {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	@NotNull(message="Property Type cannot be null")
 	private String propertyType;
-	private double budget;
+	@NotNull(message="Locality cannot be null")
 	private String locality;
+	@NotNull
+	private double budget;
 }

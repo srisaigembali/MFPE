@@ -1,3 +1,3 @@
-insert into requirement(property_type,budget,locality) values('villa',1000000,'Hyderabad');
-insert into requirement(property_type,budget,locality) values('flat',1500000,'Mumbai');
-insert into requirement(property_type,budget,locality) values('duplex',2000000,'Delhi');
+insert into requirement(property_type,locality,budget) values('villa','Hyderabad',1000000);
+insert into requirement(property_type,locality,budget) values('flat','Mumbai',1500000);
+insert into requirement(property_type,locality,budget) values('duplex','Delhi',2000000);

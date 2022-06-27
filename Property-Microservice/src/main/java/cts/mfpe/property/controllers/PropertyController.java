@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import cts.mfpe.property.models.Property;
+import cts.mfpe.property.entities.Property;
 import cts.mfpe.property.service.PropertyService;
 
 @RestController
@@ -21,23 +21,23 @@ public class PropertyController {
 	private PropertyService propertyService;
 	
 	@PostMapping("/createProperty")
-	public ResponseEntity<Property> createProperty(@RequestBody Property property) {
+	public ResponseEntity<String> createProperty(@RequestBody Property property) {
 		propertyService.createProperty(property);
-		return new ResponseEntity<Property>(property,HttpStatus.CREATED);
+		return new ResponseEntity<>("Property Created Successfully!",HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/getAllProperties")
-	public List<Property> getAllProperties(){
-		return propertyService.getAllProperties();
+	public ResponseEntity<List<Property>> getAllProperties(){
+		return ResponseEntity.ok(propertyService.getAllProperties());
 	}
 	
 	@GetMapping("/getAllPropertiesByType/{propertyType}")
-	public List<Property> getAllPropertiesByType(@PathVariable String propertyType){
-		return propertyService.getAllPropertiesByType(propertyType);
+	public ResponseEntity<List<Property>> getAllPropertiesByType(@PathVariable String propertyType){
+		return ResponseEntity.ok(propertyService.getAllPropertiesByType(propertyType));
 	}
 	
 	@GetMapping("/getAllPropertiesByLocality/{locality}")
-	public List<Property> getAllPropertiesByLocality(@PathVariable String locality){
-		return propertyService.getAllPropertiesByLocality(locality);
+	public ResponseEntity<List<Property>> getAllPropertiesByLocality(@PathVariable String locality){
+		return ResponseEntity.ok(propertyService.getAllPropertiesByLocality(locality));
 	}
 }
