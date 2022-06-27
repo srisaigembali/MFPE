@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import cts.mfpe.manager.clients.CustomerServiceClient;
 import cts.mfpe.manager.entities.Customer;
 import cts.mfpe.manager.entities.Executive;
+import cts.mfpe.manager.exceptions.ExecutiveAlredyExistsException;
 import cts.mfpe.manager.repos.ExecutiveRepository;
 
 @Service
@@ -20,7 +21,10 @@ public class ExecutiveServiceImpl implements ExecutiveService {
 	private CustomerServiceClient customerClient;
 	
 	@Override
-	public void createExecutive(Executive executive) {
+	public void createExecutive(Executive executive) throws Exception{
+		if(checkIfExecutiveAlreadyExists(executive.getName())) {
+			throw new ExecutiveAlredyExistsException("Executive Already Exists");
+		}
 		executiveRepo.save(executive);
 	}
 
@@ -30,7 +34,7 @@ public class ExecutiveServiceImpl implements ExecutiveService {
 	}
 
 	@Override
-	public List<Executive> getAllExecutivesByLocality(String locality) {
+	public List<Executive> getAllExecutivesByLocality(String locality) throws Exception{
 		return executiveRepo.findByLocality(locality);
 	}
 
@@ -40,7 +44,7 @@ public class ExecutiveServiceImpl implements ExecutiveService {
 	}
 
 	@Override
-	public Customer getCustomerById(int id) {
+	public Customer getCustomerById(int id) throws Exception{
 		return customerClient.getCustomerDetails(id);
 	}
 
@@ -52,5 +56,8 @@ public class ExecutiveServiceImpl implements ExecutiveService {
 		executiveRepo.save(executive);
 	}
 
-
+	public boolean checkIfExecutiveAlreadyExists(String executiveName) {
+		return getAllExecutives().stream().anyMatch(e -> e.getName().equals(executiveName));
+	}
+	
 }

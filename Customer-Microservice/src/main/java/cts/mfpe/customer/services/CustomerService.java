@@ -10,6 +10,7 @@ import cts.mfpe.customer.clients.PropertyServiceClient;
 import cts.mfpe.customer.entities.Customer;
 import cts.mfpe.customer.entities.Property;
 import cts.mfpe.customer.entities.Requirement;
+import cts.mfpe.customer.exceptions.CustomerAlredyExistsException;
 import cts.mfpe.customer.repos.CustomerRepository;
 import cts.mfpe.customer.repos.RequirementRepository;
 
@@ -33,7 +34,10 @@ public class CustomerService {
 		return customerRepo.findAll();
 	}
 	
-	public void createCustomer(Customer customer) {
+	public void createCustomer(Customer customer) throws Exception{
+		if(checkIfCustomerAlreadyExists(customer.getName())) {
+			throw new CustomerAlredyExistsException("Customer already exists!");
+		}
 		customerRepo.save(customer);
 	}
 	
@@ -55,6 +59,10 @@ public class CustomerService {
 		Requirement requirement = requirementRepo.findById(reqid).get();
 		customer.getRequirements().add(requirement);
 		customerRepo.save(customer);
+	}
+	
+	public boolean checkIfCustomerAlreadyExists(String customerName) {
+		return getAllCustomers().stream().anyMatch(c -> c.getName().equals(customerName));
 	}
 	
 }

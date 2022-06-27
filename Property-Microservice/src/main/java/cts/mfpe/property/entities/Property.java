@@ -18,6 +18,6 @@ public class Property {
 	private String propertyType;
 	@NotNull(message="Locality cannot be null")
 	private String locality;
-	@NotNull
+	@NotNull(message="Budget cannot be null")
 	private double budget;
 }

@@ -10,15 +10,15 @@ import cts.mfpe.manager.entities.Executive;
 @Service
 public interface ExecutiveService {
 
-	public void createExecutive(Executive executive);
+	public void createExecutive(Executive executive) throws Exception;
 	
 	public List<Executive> getAllExecutives();
 	
-	public List<Executive> getAllExecutivesByLocality(String locality);
+	public List<Executive> getAllExecutivesByLocality(String locality) throws Exception;
 	
 	public List<Customer> getAllCustomers();
 	
-	public Customer getCustomerById(int id);
+	public Customer getCustomerById(int id) throws Exception;
 	
 	public void assignExecutive(int executiveid, int customerid);
 }

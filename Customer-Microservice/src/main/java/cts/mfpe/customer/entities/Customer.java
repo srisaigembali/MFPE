@@ -8,8 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -27,14 +25,13 @@ public class Customer {
 	private int id;
 	@NotNull(message="Customer name cannot be null")
 	private String name;
-	@NotEmpty
+	@NotEmpty(message="Address must not be empty")
 	private String address;
+	@NotNull(message="Email Id cannot be null")
 	@Email(message="Invalid Email Entered")
 	private String emailid;
-	@NotNull(message="Invalid Contact Number Entered")
-	@Min(value=10,message="Contact Number should be minimum of 10 digits")
-	@Max(value=10,message="Contact Number should be maximum of 10 digits")
-	private String contactNumber;
+	@NotNull(message="Contact Number cannot be null")
+	private Long contactNumber;
 	@OneToMany
 	private Set<Requirement> requirements;
 }
