@@ -55,8 +55,8 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 	
 	@Override
-	public List<Property> getAllProperties(){
-		return propertyClient.getAllProperties();
+	public List<Property> getAllProperties(String token) throws Exception{
+		return propertyClient.getAllProperties(token);
 	}
 
 	@Override

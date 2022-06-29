@@ -47,6 +47,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(exceptionDetails, HttpStatus.CONFLICT);
 	}
 	
+	@ExceptionHandler(AuthorizationException.class)
+	public ResponseEntity<ExceptionDetails> handleAuthorizationException(AuthorizationException exception) {
+		ExceptionDetails exceptionDetail = new ExceptionDetails(LocalDateTime.now(), exception.getMessage());
+		return new ResponseEntity<>(exceptionDetail, HttpStatus.FORBIDDEN);
+	}
+	
 	@ExceptionHandler(FeignException.class)
     public ResponseEntity<ExceptionDetails> handleFeignStatusException(FeignException ex, HttpServletResponse response) {
 		ExceptionDetails exceptionDetail = new ExceptionDetails(LocalDateTime.now(), ex.getMessage());

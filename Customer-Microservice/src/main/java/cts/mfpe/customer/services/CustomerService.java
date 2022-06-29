@@ -19,7 +19,7 @@ public interface CustomerService {
 	
 	Customer getCustomerDetails(int id);
 	
-	List<Property> getAllProperties();
+	List<Property> getAllProperties(String token) throws Exception;
 	
 	void assignRequirements(int custid, int reqid);
 	

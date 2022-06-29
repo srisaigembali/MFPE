@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import feign.FeignException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -30,6 +34,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(exceptionDetails, HttpStatus.NOT_FOUND);
 	}
 
+	@ExceptionHandler(AuthorizationException.class)
+	public ResponseEntity<ExceptionDetails> handleAuthorizationException(AuthorizationException exception) {
+		ExceptionDetails exceptionDetail = new ExceptionDetails(LocalDateTime.now(), exception.getMessage());
+		return new ResponseEntity<>(exceptionDetail, HttpStatus.FORBIDDEN);
+	}
+	
+	@ExceptionHandler(FeignException.class)
+    public ResponseEntity<ExceptionDetails> handleFeignStatusException(FeignException ex, HttpServletResponse response) {
+		ExceptionDetails exceptionDetail = new ExceptionDetails(LocalDateTime.now(), ex.getMessage());
+		return new ResponseEntity<>(exceptionDetail, HttpStatus.BAD_REQUEST);
+    }
+	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<Object> handleGlobalException(Exception ex, WebRequest request) {
 		ExceptionDetails exceptionDetail = new ExceptionDetails(LocalDateTime.now(), ex.getMessage());

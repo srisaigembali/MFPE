@@ -12,7 +12,7 @@ import cts.mfpe.manager.exceptions.ExecutiveAlredyExistsException;
 import cts.mfpe.manager.repos.ExecutiveRepository;
 
 @Service
-public class ExecutiveServiceImpl implements ExecutiveService {
+public class ManagerServiceImpl implements ManagerService {
 
 	@Autowired
 	private ExecutiveRepository executiveRepo;
@@ -39,19 +39,19 @@ public class ExecutiveServiceImpl implements ExecutiveService {
 	}
 
 	@Override
-	public List<Customer> getAllCustomers() {
-		return customerClient.getAllCustomers();
+	public List<Customer> getAllCustomers(String token) throws Exception {
+		return customerClient.getAllCustomers(token);
 	}
 
 	@Override
-	public Customer getCustomerById(int id) throws Exception{
-		return customerClient.getCustomerDetails(id);
+	public Customer getCustomerById(int id, String token) throws Exception{
+		return customerClient.getCustomerDetails(id, token);
 	}
 
 	@Override
-	public void assignExecutive(int executiveid, int customerid) {
+	public void assignExecutive(int executiveid, int customerid, String token) throws Exception{
 		Executive executive = executiveRepo.findById(executiveid).get();
-		Customer customer = customerClient.getCustomerDetails(customerid);
+		Customer customer = customerClient.getCustomerDetails(customerid, token);
 		executive.getCustomers().add(customer);
 		executiveRepo.save(executive);
 	}

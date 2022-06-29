@@ -1,8 +1,6 @@
-package cts.mfpe.customer.exceptions;
+package cts.mfpe.authorization.exceptions;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -10,7 +8,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -28,22 +25,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(exceptionDetails, status);
 	}
 
-	@ExceptionHandler(CustomerNotFoundException.class)
-	public ResponseEntity<ExceptionDetails> handleCustomerNotFoundException(CustomerNotFoundException ex) {
-		ExceptionDetails exceptionDetails = new ExceptionDetails(LocalDateTime.now(), ex.getMessage());
-		return new ResponseEntity<>(exceptionDetails, HttpStatus.NOT_FOUND);
-	}
-
-	@ExceptionHandler(CustomerAlredyExistsException.class)
-	public ResponseEntity<ExceptionDetails> handleCustomerAlredyExistsException(CustomerAlredyExistsException ex) {
+	@ExceptionHandler(UserAlredyExistsException.class)
+	public ResponseEntity<ExceptionDetails> handleUserAlredyExistsException(UserAlredyExistsException ex) {
 		ExceptionDetails exceptionDetails = new ExceptionDetails(LocalDateTime.now(), ex.getMessage());
 		return new ResponseEntity<>(exceptionDetails, HttpStatus.CONFLICT);
 	}
-
+	
 	@ExceptionHandler(AuthorizationException.class)
-	public ResponseEntity<ExceptionDetails> handleAuthorizationException(AuthorizationException exception) {
-		ExceptionDetails exceptionDetail = new ExceptionDetails(LocalDateTime.now(), exception.getMessage());
-		return new ResponseEntity<>(exceptionDetail, HttpStatus.FORBIDDEN);
+	public ResponseEntity<Object> handleGlobalException(AuthorizationException ex, WebRequest request) {
+		ExceptionDetails exceptionDetail = new ExceptionDetails(LocalDateTime.now(), ex.getMessage());
+		return new ResponseEntity<>(exceptionDetail, HttpStatus.UNAUTHORIZED);
 	}
 	
 	@ExceptionHandler(FeignException.class)
@@ -57,13 +48,5 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	public ResponseEntity<Object> handleGlobalException(Exception ex, WebRequest request) {
 		ExceptionDetails exceptionDetail = new ExceptionDetails(LocalDateTime.now(), ex.getMessage());
 		return new ResponseEntity<>(exceptionDetail, HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-
-	@Override
-	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-			HttpHeaders headers, HttpStatus status, WebRequest request) {
-		List<String> validationList = ex.getBindingResult().getFieldErrors().stream()
-				.map(fieldError -> fieldError.getDefaultMessage()).collect(Collectors.toList());
-		return new ResponseEntity<>(validationList, status);
 	}
 }
