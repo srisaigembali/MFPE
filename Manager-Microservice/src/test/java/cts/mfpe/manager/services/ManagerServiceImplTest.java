@@ -6,7 +6,6 @@ import cts.mfpe.manager.entities.Executive;
 import cts.mfpe.manager.exceptions.ExecutiveAlredyExistsException;
 import cts.mfpe.manager.repos.ExecutiveRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -14,13 +13,14 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-class ExecutiveServiceImplTest {
+class ManagerServiceImplTest {
 
     @InjectMocks
-    ExecutiveServiceImpl executiveServiceImpl;
+    ManagerServiceImpl managerServiceImpl;
 
     @Mock
     ExecutiveRepository executiveRepository;
@@ -36,16 +36,16 @@ class ExecutiveServiceImplTest {
     @Test
     void createExecutiveWhenExecutiveDoesNotExist() throws Exception {
         Executive executive = mockExecutive();
-        executiveServiceImpl.createExecutive(executive);
+        managerServiceImpl.createExecutive(executive);
         verify(executiveRepository, times(1)).save(executive);
     }
 
     @Test
     void createExecutiveWhenExecutiveExist() {
         Executive executive = mockExecutive();
-        when(executiveServiceImpl.getAllExecutives()).thenReturn(mockExecutiveList());
+        when(managerServiceImpl.getAllExecutives()).thenReturn(mockExecutiveList());
         when(executiveRepository.save(any(Executive.class))).thenReturn(executive);
-        assertThrows(ExecutiveAlredyExistsException.class, () -> executiveServiceImpl.createExecutive(mockExecutive()));
+        assertThrows(ExecutiveAlredyExistsException.class, () -> managerServiceImpl.createExecutive(mockExecutive()));
     }
 
     private List<Executive> mockExecutiveList() {
@@ -68,29 +68,29 @@ class ExecutiveServiceImplTest {
     @Test
     void getAllExecutives() {
         when(executiveRepository.findAll()).thenReturn(new ArrayList<Executive>());
-        executiveServiceImpl.getAllExecutives();
+        managerServiceImpl.getAllExecutives();
         verify(executiveRepository, times(1)).findAll();
     }
 
     @Test
     void getAllExecutivesByLocality() throws Exception {
         when(executiveRepository.findByLocality(anyString())).thenReturn(new ArrayList<Executive>());
-        executiveServiceImpl.getAllExecutivesByLocality(anyString());
+        managerServiceImpl.getAllExecutivesByLocality(anyString());
         verify(executiveRepository, times(1)).findByLocality("");
     }
 
     @Test
-    void getAllCustomers() {
-        when(customerServiceClient.getAllCustomers()).thenReturn(new ArrayList<Customer>());
-        executiveServiceImpl.getAllCustomers();
-        verify(customerServiceClient, times(1)).getAllCustomers();
+    void getAllCustomers() throws Exception {
+        when(customerServiceClient.getAllCustomers(anyString())).thenReturn(new ArrayList<Customer>());
+        managerServiceImpl.getAllCustomers("");
+        verify(customerServiceClient, times(1)).getAllCustomers("");
     }
 
     @Test
     void getCustomerById() throws Exception {
 
-        when(customerServiceClient.getCustomerDetails(anyInt())).thenReturn(mockCustomer());
-        assertEquals(mockCustomer(), executiveServiceImpl.getCustomerById(anyInt()));
+        when(customerServiceClient.getCustomerDetails(anyInt(), anyString())).thenReturn(mockCustomer());
+        assertEquals(mockCustomer(), managerServiceImpl.getCustomerById(1, "tokenxurn43iqr"));
     }
 
     private Customer mockCustomer() {
@@ -103,13 +103,13 @@ class ExecutiveServiceImplTest {
     }
 
     @Test
-    void assignExecutive() {
+    void assignExecutive() throws Exception {
         Executive c = mockExecutive();
         Customer r = mockCustomer();
         when(executiveRepository.findById(Optional.of(anyInt()).get())).thenReturn(Optional.of(mockExecutive()));
-        when(customerServiceClient.getCustomerDetails(Optional.of(anyInt()).get())).thenReturn(r);
+        when(customerServiceClient.getCustomerDetails(anyInt(), anyString())).thenReturn(r);
         when(executiveRepository.save(any(Executive.class))).thenReturn(c);
-        executiveServiceImpl.assignExecutive(1, 1);
+        managerServiceImpl.assignExecutive(1, 1, "");
         verify(executiveRepository, times(1)).save(any(Executive.class));
     }
 }

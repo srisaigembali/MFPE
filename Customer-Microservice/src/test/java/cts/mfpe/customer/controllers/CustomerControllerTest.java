@@ -16,7 +16,8 @@ import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
@@ -49,8 +50,9 @@ class CustomerControllerTest {
     @Test
     void getAllRequirements_Exception() {
         when(authorizationClient.authorizeTheRequestForCustomer(anyString())).thenReturn(false);
-        assertThrows(AuthorizationException.class,() -> customerController.getAllRequirements(requestTokenHeader));
+        assertThrows(AuthorizationException.class, () -> customerController.getAllRequirements(requestTokenHeader));
     }
+
     @Test
     void getAllCustomers() throws AuthorizationException {
         when(authorizationClient.authorizeTheRequestForManager(anyString())).thenReturn(true);
@@ -61,7 +63,7 @@ class CustomerControllerTest {
     @Test
     void getAllCustomers_Exception() {
         when(authorizationClient.authorizeTheRequestForManager(anyString())).thenReturn(false);
-        assertThrows(AuthorizationException.class,() -> customerController.getAllCustomers(requestTokenHeader));
+        assertThrows(AuthorizationException.class, () -> customerController.getAllCustomers(requestTokenHeader));
     }
 
     @Test
@@ -76,7 +78,7 @@ class CustomerControllerTest {
     void createCustomer_Exception() {
         when(authorizationClient.authorizeTheRequestForCustomer(anyString())).thenReturn(false);
         Customer mockCustomer = mockCustomer();
-        assertThrows(AuthorizationException.class,() -> customerController.createCustomer(mockCustomer, requestTokenHeader));
+        assertThrows(AuthorizationException.class, () -> customerController.createCustomer(mockCustomer, requestTokenHeader));
     }
 
     private Customer mockCustomer() {
@@ -93,14 +95,14 @@ class CustomerControllerTest {
     void getCustomerDetailsWhenCustomerNotNull() throws Exception {
         when(authorizationClient.authorizeTheRequest(anyString())).thenReturn(true);
         when(customerService.getCustomerDetails(anyInt())).thenReturn(mockCustomer());
-        assertEquals(HttpStatus.OK, customerController.getCustomerDetails(1,requestTokenHeader).getStatusCode());
+        assertEquals(HttpStatus.OK, customerController.getCustomerDetails(1, requestTokenHeader).getStatusCode());
     }
 
     @Test
     void getCustomerDetailsWhenCustomerNotNull_Exception() {
         when(authorizationClient.authorizeTheRequest(anyString())).thenReturn(false);
         when(customerService.getCustomerDetails(anyInt())).thenReturn(mockCustomer());
-        assertThrows(AuthorizationException.class,() -> customerController.getCustomerDetails(1, requestTokenHeader));
+        assertThrows(AuthorizationException.class, () -> customerController.getCustomerDetails(1, requestTokenHeader));
     }
 
     @Test
@@ -119,7 +121,7 @@ class CustomerControllerTest {
     @Test
     void getAllProperties_Exception() {
         when(authorizationClient.authorizeTheRequestForCustomer(anyString())).thenReturn(false);
-        assertThrows(AuthorizationException.class,() -> customerController.getAllProperties(requestTokenHeader));
+        assertThrows(AuthorizationException.class, () -> customerController.getAllProperties(requestTokenHeader));
     }
 
     @Test
@@ -132,7 +134,7 @@ class CustomerControllerTest {
     @Test
     void assignRequirements_Exception() {
         when(authorizationClient.authorizeTheRequestForCustomer(anyString())).thenReturn(false);
-        assertThrows(AuthorizationException.class,() -> customerController.assignRequirements(1,1,requestTokenHeader));
+        assertThrows(AuthorizationException.class, () -> customerController.assignRequirements(1, 1, requestTokenHeader));
     }
 
 }

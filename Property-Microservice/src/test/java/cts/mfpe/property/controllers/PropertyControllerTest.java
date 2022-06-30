@@ -6,7 +6,6 @@ import cts.mfpe.property.exceptions.AuthorizationException;
 import cts.mfpe.property.exceptions.PropertyNotFoundException;
 import cts.mfpe.property.service.PropertyService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -16,7 +15,8 @@ import org.springframework.http.HttpStatus;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
@@ -44,13 +44,13 @@ class PropertyControllerTest {
     void createProperty() throws AuthorizationException {
         when(authorizationClient.authorizeTheRequestForManager(anyString())).thenReturn(true);
         doNothing().when(propertyService).createProperty(any(Property.class));
-        assertEquals(HttpStatus.CREATED, propertyController.createProperty(new Property(),requestTokenHeader).getStatusCode());
+        assertEquals(HttpStatus.CREATED, propertyController.createProperty(new Property(), requestTokenHeader).getStatusCode());
     }
 
     @Test
-    void createProperty_Exception(){
+    void createProperty_Exception() {
         when(authorizationClient.authorizeTheRequestForCustomer(anyString())).thenReturn(false);
-        assertThrows(AuthorizationException.class,() -> propertyController.createProperty(new Property(), requestTokenHeader));
+        assertThrows(AuthorizationException.class, () -> propertyController.createProperty(new Property(), requestTokenHeader));
     }
 
 
@@ -62,9 +62,9 @@ class PropertyControllerTest {
     }
 
     @Test
-    void getAllProperties_Exception(){
+    void getAllProperties_Exception() {
         when(authorizationClient.authorizeTheRequest(anyString())).thenReturn(false);
-        assertThrows(AuthorizationException.class,() -> propertyController.getAllProperties(requestTokenHeader));
+        assertThrows(AuthorizationException.class, () -> propertyController.getAllProperties(requestTokenHeader));
     }
 
     @Test
@@ -79,16 +79,16 @@ class PropertyControllerTest {
         List<Property> p = new ArrayList<Property>();
         p.add(new Property());
         when(propertyService.getAllPropertiesByType(anyString())).thenReturn(p);
-        assertEquals(HttpStatus.OK, propertyController.getAllPropertiesByType("",requestTokenHeader).getStatusCode());
+        assertEquals(HttpStatus.OK, propertyController.getAllPropertiesByType("", requestTokenHeader).getStatusCode());
     }
 
     @Test
-    void getAllPropertiesByType_AuthException(){
+    void getAllPropertiesByType_AuthException() {
         when(authorizationClient.authorizeTheRequest(anyString())).thenReturn(false);
         List<Property> p = new ArrayList<Property>();
         p.add(new Property());
         when(propertyService.getAllPropertiesByType(anyString())).thenReturn(p);
-        assertThrows(AuthorizationException.class,() -> propertyController.getAllPropertiesByType("", requestTokenHeader));
+        assertThrows(AuthorizationException.class, () -> propertyController.getAllPropertiesByType("", requestTokenHeader));
     }
 
     @Test
@@ -107,11 +107,11 @@ class PropertyControllerTest {
     }
 
     @Test
-    void getAllPropertiesByLocality_AuthException(){
+    void getAllPropertiesByLocality_AuthException() {
         when(authorizationClient.authorizeTheRequest(anyString())).thenReturn(false);
         List<Property> p = new ArrayList<Property>();
         p.add(new Property());
         when(propertyService.getAllPropertiesByLocality(anyString())).thenReturn(p);
-        assertThrows(AuthorizationException.class,() -> propertyController.getAllPropertiesByLocality("", requestTokenHeader));
+        assertThrows(AuthorizationException.class, () -> propertyController.getAllPropertiesByLocality("", requestTokenHeader));
     }
 }

@@ -10,7 +10,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class PropertyServiceImplTest {
