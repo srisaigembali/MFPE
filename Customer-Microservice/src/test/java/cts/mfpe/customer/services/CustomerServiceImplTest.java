@@ -2,19 +2,15 @@ package cts.mfpe.customer.services;
 
 import cts.mfpe.customer.clients.PropertyServiceClient;
 import cts.mfpe.customer.entities.Customer;
-import cts.mfpe.customer.entities.Property;
 import cts.mfpe.customer.entities.Requirement;
 import cts.mfpe.customer.exceptions.CustomerAlredyExistsException;
 import cts.mfpe.customer.repos.CustomerRepository;
 import cts.mfpe.customer.repos.RequirementRepository;
-import feign.Request;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
 
 import java.util.*;
 
@@ -42,7 +38,7 @@ class CustomerServiceImplTest {
 
     @Test
     void getAllRequirements() {
-        when(requirementRepository.findAll()).thenReturn(new ArrayList<Requirement>());
+        when(requirementRepository.findAll()).thenReturn(new ArrayList<>());
         customerServiceImpl.getAllRequirements();
         verify(requirementRepository, times(1)).findAll();
     }
@@ -58,7 +54,7 @@ class CustomerServiceImplTest {
 
     @Test
     void getAllCustomers() {
-        when(customerRepository.findAll()).thenReturn(new ArrayList<Customer>());
+        when(customerRepository.findAll()).thenReturn(new ArrayList<>());
         customerServiceImpl.getAllCustomers();
         verify(customerRepository, times(1)).findAll();
     }
@@ -71,7 +67,7 @@ class CustomerServiceImplTest {
     }
 
     @Test
-    void createCustomerWhenCustomerAlreadyExists() throws Exception {
+    void createCustomerWhenCustomerAlreadyExists() {
         Customer customer = mockCustomer();
         when(customerServiceImpl.getAllCustomers()).thenReturn(mockCustomerList());
         when(customerRepository.save(any(Customer.class))).thenReturn(customer);
@@ -99,10 +95,11 @@ class CustomerServiceImplTest {
     }
 
     @Test
-    void getAllProperties() {
-        when(propertyServiceClient.getAllProperties()).thenReturn(new ArrayList<Property>());
-        customerServiceImpl.getAllProperties();
-        verify(propertyServiceClient, times(1)).getAllProperties();
+    void getAllProperties() throws Exception {
+        when(propertyServiceClient.getAllProperties(anyString())).thenReturn(new ArrayList<>());
+        String requestTokenHeader = "ewgc4fjkjjkjr34f34r";
+        customerServiceImpl.getAllProperties(requestTokenHeader);
+        verify(propertyServiceClient, times(1)).getAllProperties(requestTokenHeader);
     }
 
     @Test
@@ -124,7 +121,7 @@ class CustomerServiceImplTest {
         c.setAddress("VVIP Mall");
         c.setContactNumber(987654321L);
 
-        c.setRequirements(new HashSet<Requirement>(Set.of(new Requirement())));
+        c.setRequirements(new HashSet<>(Set.of(new Requirement())));
         return c;
     }
 }
