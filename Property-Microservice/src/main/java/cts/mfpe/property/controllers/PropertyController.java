@@ -11,44 +11,70 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import cts.mfpe.property.clients.AuthorizationClient;
 import cts.mfpe.property.entities.Property;
+import cts.mfpe.property.exceptions.AuthorizationException;
 import cts.mfpe.property.exceptions.PropertyNotFoundException;
 import cts.mfpe.property.service.PropertyService;
 
 @RestController
 public class PropertyController {
-	
+
 	@Autowired
 	private PropertyService propertyService;
-	
+
+	@Autowired
+	private AuthorizationClient authorizationClient;
+
 	@PostMapping("/createProperty")
-	public ResponseEntity<String> createProperty(@RequestBody @Valid Property property) {
-		propertyService.createProperty(property);
-		return new ResponseEntity<>("Property Created Successfully!",HttpStatus.CREATED);
+	public ResponseEntity<String> createProperty(@RequestBody @Valid Property property,
+			@RequestHeader(value = "Authorization", required = true) String requestTokenHeader)
+			throws AuthorizationException {
+		if (authorizationClient.authorizeTheRequestForManager(requestTokenHeader)) {
+			propertyService.createProperty(property);
+			return new ResponseEntity<>("Property Created Successfully!", HttpStatus.CREATED);
+		}
+		throw new AuthorizationException("Not Allowed");
 	}
-	
+
 	@GetMapping("/getAllProperties")
-	public ResponseEntity<List<Property>> getAllProperties(){
-		return ResponseEntity.ok(propertyService.getAllProperties());
+	public ResponseEntity<List<Property>> getAllProperties(
+			@RequestHeader(value = "Authorization", required = true) String requestTokenHeader)
+			throws AuthorizationException {
+		if (authorizationClient.authorizeTheRequest(requestTokenHeader)) {
+			return ResponseEntity.ok(propertyService.getAllProperties());
+		}
+		throw new AuthorizationException("Not Allowed");
 	}
-	
+
 	@GetMapping("/getAllPropertiesByType/{propertyType}")
-	public ResponseEntity<List<Property>> getAllPropertiesByType(@PathVariable String propertyType) throws Exception{
+	public ResponseEntity<List<Property>> getAllPropertiesByType(@PathVariable String propertyType,
+			@RequestHeader(value = "Authorization", required = true) String requestTokenHeader)
+					throws Exception {
 		List<Property> properties = propertyService.getAllPropertiesByType(propertyType);
-		if(properties.size()==0) {
-			throw new PropertyNotFoundException("Properties of property type "+propertyType+" Not Found!");
+		if (properties.size() == 0) {
+			throw new PropertyNotFoundException("Properties of property type " + propertyType + " Not Found!");
 		}
-		return ResponseEntity.ok(properties);
+		if (authorizationClient.authorizeTheRequest(requestTokenHeader)) {
+			return ResponseEntity.ok(properties);
+		}
+		throw new AuthorizationException("Not Allowed");
 	}
-	
+
 	@GetMapping("/getAllPropertiesByLocality/{locality}")
-	public ResponseEntity<List<Property>> getAllPropertiesByLocality(@PathVariable String locality) throws Exception{
+	public ResponseEntity<List<Property>> getAllPropertiesByLocality(@PathVariable String locality,
+			@RequestHeader(value = "Authorization", required = true) String requestTokenHeader)
+					throws Exception {
 		List<Property> properties = propertyService.getAllPropertiesByLocality(locality);
-		if(properties.size()==0) {
-			throw new PropertyNotFoundException("Properties in locality "+locality+" Not Found!");
+		if (properties.size() == 0) {
+			throw new PropertyNotFoundException("Properties in locality " + locality + " Not Found!");
 		}
-		return ResponseEntity.ok(properties);
+		if (authorizationClient.authorizeTheRequest(requestTokenHeader)) {
+			return ResponseEntity.ok(properties);
+		}
+		throw new AuthorizationException("Not Allowed");
 	}
 }
