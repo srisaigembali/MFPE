@@ -10,8 +10,10 @@ import cts.mfpe.manager.entities.Customer;
 import cts.mfpe.manager.entities.Executive;
 import cts.mfpe.manager.exceptions.ExecutiveAlredyExistsException;
 import cts.mfpe.manager.repos.ExecutiveRepository;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class ManagerServiceImpl implements ManagerService {
 
 	@Autowired
@@ -26,26 +28,35 @@ public class ManagerServiceImpl implements ManagerService {
 			throw new ExecutiveAlredyExistsException("Executive Already Exists");
 		}
 		executiveRepo.save(executive);
+		log.info("Exceutive {} created", executive.toString());
 	}
 
 	@Override
 	public List<Executive> getAllExecutives() {
-		return executiveRepo.findAll();
+		List<Executive> executives = executiveRepo.findAll();
+		log.info("Exceutives: {}", executives);
+		return executives;
 	}
 
 	@Override
 	public List<Executive> getAllExecutivesByLocality(String locality) throws Exception{
-		return executiveRepo.findByLocality(locality);
+		List<Executive> executives = executiveRepo.findByLocality(locality);
+		log.info("Exceutives with locality {}: {}", locality, executives);
+		return executives;
 	}
 
 	@Override
 	public List<Customer> getAllCustomers(String token) throws Exception {
-		return customerClient.getAllCustomers(token);
+		List<Customer> customers = customerClient.getAllCustomers(token);
+		log.info("Customers: {}", customers);
+		return customers;
 	}
 
 	@Override
 	public Customer getCustomerById(int id, String token) throws Exception{
-		return customerClient.getCustomerDetails(id, token);
+		Customer customer = customerClient.getCustomerDetails(id, token);
+		log.info("Customer: {}", customer.toString());
+		return customer;
 	}
 
 	@Override
@@ -54,6 +65,7 @@ public class ManagerServiceImpl implements ManagerService {
 		Customer customer = customerClient.getCustomerDetails(customerid, token);
 		executive.getCustomers().add(customer);
 		executiveRepo.save(executive);
+		log.info("Customer with id {} assigned to Exceutive with id {}", customerid, executiveid);
 	}
 
 	public boolean checkIfExecutiveAlreadyExists(String executiveName) {

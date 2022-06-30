@@ -13,8 +13,10 @@ import cts.mfpe.customer.entities.Requirement;
 import cts.mfpe.customer.exceptions.CustomerAlredyExistsException;
 import cts.mfpe.customer.repos.CustomerRepository;
 import cts.mfpe.customer.repos.RequirementRepository;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class CustomerServiceImpl implements CustomerService{
 	
 	@Autowired
@@ -28,12 +30,16 @@ public class CustomerServiceImpl implements CustomerService{
 	
 	@Override
 	public List<Requirement> getAllRequirements(){
-		return requirementRepo.findAll();
+		List<Requirement> requirements = requirementRepo.findAll();
+		log.info("Requirements: {}", requirements);
+		return requirements;
 	}
 	
 	@Override
 	public List<Customer> getAllCustomers() {
-		return customerRepo.findAll();
+		List<Customer> customers = customerRepo.findAll();
+		log.info("Customers: {}", customers);
+		return customers;
 	}
 	
 	@Override
@@ -42,6 +48,7 @@ public class CustomerServiceImpl implements CustomerService{
 			throw new CustomerAlredyExistsException("Customer already exists!");
 		}
 		customerRepo.save(customer);
+		log.info("Customer {} created",customer.toString());
 	}
 	
 	@Override
@@ -51,12 +58,15 @@ public class CustomerServiceImpl implements CustomerService{
 		if(result.isPresent()) {
 			customer=result.get();
 		}
+		log.info("Customer: {}",customer);
 		return customer;
 	}
 	
 	@Override
 	public List<Property> getAllProperties(String token) throws Exception{
-		return propertyClient.getAllProperties(token);
+		List<Property> properties = propertyClient.getAllProperties(token);
+		log.info("Properties: {}", properties);
+		return properties;
 	}
 
 	@Override
@@ -65,6 +75,7 @@ public class CustomerServiceImpl implements CustomerService{
 		Requirement requirement = requirementRepo.findById(reqid).get();
 		customer.getRequirements().add(requirement);
 		customerRepo.save(customer);
+		log.info("Requirement with id {} assigned to customer with id {}",reqid,custid);
 	}
 	
 	@Override
