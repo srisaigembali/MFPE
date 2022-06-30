@@ -1,5 +1,6 @@
 package cts.mfpe.manager.entities;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.ElementCollection;
@@ -29,5 +30,5 @@ public class Executive {
 	@Email(message="Invalid Email Entered")
 	private String emailId;
 	@ElementCollection
-	private Set<Customer> customers;
+	private HashSet<Customer> customers;
 }
