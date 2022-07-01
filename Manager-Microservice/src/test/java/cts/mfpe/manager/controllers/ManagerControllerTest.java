@@ -46,7 +46,7 @@ class ManagerControllerTest {
         when(authorizationClient.authorizeTheRequestForManager(anyString())).thenReturn(true);
         Executive executive = mockExecutive();
         doNothing().when(managerService).createExecutive(any(Executive.class));
-        assertEquals(HttpStatus.CREATED, managerController.createExecutive(mockExecutive(), requestTokenHeader).getStatusCode());
+        assertEquals(HttpStatus.CREATED, managerController.createExecutive(executive, requestTokenHeader).getStatusCode());
     }
 
     @Test

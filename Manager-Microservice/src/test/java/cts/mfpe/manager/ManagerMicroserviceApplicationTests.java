@@ -8,6 +8,7 @@ class ManagerMicroserviceApplicationTests {
 
 	@Test
 	void contextLoads() {
+		
 	}
 
 }

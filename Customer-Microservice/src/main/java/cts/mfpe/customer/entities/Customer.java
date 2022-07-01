@@ -1,6 +1,5 @@
 package cts.mfpe.customer.entities;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -34,5 +33,5 @@ public class Customer {
 	@NotNull(message="Contact Number cannot be null")
 	private Long contactNumber;
 	@OneToMany
-	private HashSet<Requirement> requirements;
+	private Set<Requirement> requirements;
 }
