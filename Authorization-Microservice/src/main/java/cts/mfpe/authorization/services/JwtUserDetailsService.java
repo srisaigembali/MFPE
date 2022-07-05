@@ -1,5 +1,7 @@
 package cts.mfpe.authorization.services;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -30,7 +32,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 		}
 		log.info("User found");
 		log.info("user successfully located");
-		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.getRoles());
+		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), new ArrayList<>());
 	}
 	
 	public void save(User user) throws Exception{

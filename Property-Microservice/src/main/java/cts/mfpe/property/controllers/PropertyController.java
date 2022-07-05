@@ -35,7 +35,7 @@ public class PropertyController {
 	public ResponseEntity<String> createProperty(@RequestBody @Valid Property property,
 			@RequestHeader(value = "Authorization", required = true) String requestTokenHeader)
 			throws AuthorizationException {
-		if (authorizationClient.authorizeTheRequestForManager(requestTokenHeader)) {
+		if (authorizationClient.authorizeTheRequest(requestTokenHeader)) {
 			propertyService.createProperty(property);
 			return new ResponseEntity<>("Property Created Successfully!", HttpStatus.CREATED);
 		}

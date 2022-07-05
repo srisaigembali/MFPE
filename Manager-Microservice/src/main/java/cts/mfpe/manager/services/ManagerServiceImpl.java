@@ -32,6 +32,13 @@ public class ManagerServiceImpl implements ManagerService {
 	}
 
 	@Override
+	public Executive getExecutiveDetails(int id) throws Exception {
+		Executive executive = executiveRepo.findById(id).get();
+		log.info("Executive: {}", executive.toString());
+		return executive;
+	}
+	
+	@Override
 	public List<Executive> getAllExecutives() {
 		List<Executive> executives = executiveRepo.findAll();
 		log.info("Exceutives: {}", executives);

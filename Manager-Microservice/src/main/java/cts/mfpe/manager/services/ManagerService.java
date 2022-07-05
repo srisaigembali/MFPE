@@ -12,6 +12,8 @@ public interface ManagerService {
 
 	public void createExecutive(Executive executive) throws Exception;
 	
+	public Executive getExecutiveDetails(int id) throws Exception;
+	
 	public List<Executive> getAllExecutives();
 	
 	public List<Executive> getAllExecutivesByLocality(String locality) throws Exception;

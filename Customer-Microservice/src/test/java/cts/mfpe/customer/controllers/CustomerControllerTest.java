@@ -42,33 +42,33 @@ class CustomerControllerTest {
 
     @Test
     void getAllRequirements() throws AuthorizationException {
-        when(authorizationClient.authorizeTheRequestForCustomer(anyString())).thenReturn(true);
+        when(authorizationClient.authorizeTheRequest(anyString())).thenReturn(true);
         when(customerService.getAllRequirements()).thenReturn(new ArrayList<Requirement>());
         assertEquals(HttpStatus.OK, customerController.getAllRequirements(requestTokenHeader).getStatusCode());
     }
 
     @Test
     void getAllRequirements_Exception() {
-        when(authorizationClient.authorizeTheRequestForCustomer(anyString())).thenReturn(false);
+        when(authorizationClient.authorizeTheRequest(anyString())).thenReturn(false);
         assertThrows(AuthorizationException.class, () -> customerController.getAllRequirements(requestTokenHeader));
     }
 
     @Test
     void getAllCustomers() throws AuthorizationException {
-        when(authorizationClient.authorizeTheRequestForManager(anyString())).thenReturn(true);
+        when(authorizationClient.authorizeTheRequest(anyString())).thenReturn(true);
         when(customerService.getAllCustomers()).thenReturn(new ArrayList<Customer>());
         assertEquals(HttpStatus.OK, customerController.getAllCustomers(requestTokenHeader).getStatusCode());
     }
 
     @Test
     void getAllCustomers_Exception() {
-        when(authorizationClient.authorizeTheRequestForManager(anyString())).thenReturn(false);
+        when(authorizationClient.authorizeTheRequest(anyString())).thenReturn(false);
         assertThrows(AuthorizationException.class, () -> customerController.getAllCustomers(requestTokenHeader));
     }
 
     @Test
     void createCustomer() throws Exception {
-        when(authorizationClient.authorizeTheRequestForCustomer(anyString())).thenReturn(true);
+        when(authorizationClient.authorizeTheRequest(anyString())).thenReturn(true);
         Customer mockCustomer = mockCustomer();
         doNothing().when(customerService).createCustomer(any(Customer.class));
         assertEquals(HttpStatus.CREATED, customerController.createCustomer(mockCustomer, requestTokenHeader).getStatusCode());
@@ -76,7 +76,7 @@ class CustomerControllerTest {
 
     @Test
     void createCustomer_Exception() {
-        when(authorizationClient.authorizeTheRequestForCustomer(anyString())).thenReturn(false);
+        when(authorizationClient.authorizeTheRequest(anyString())).thenReturn(false);
         Customer mockCustomer = mockCustomer();
         assertThrows(AuthorizationException.class, () -> customerController.createCustomer(mockCustomer, requestTokenHeader));
     }
@@ -113,27 +113,27 @@ class CustomerControllerTest {
 
     @Test
     void getAllProperties() throws Exception {
-        when(authorizationClient.authorizeTheRequestForCustomer(anyString())).thenReturn(true);
+        when(authorizationClient.authorizeTheRequest(anyString())).thenReturn(true);
         when(customerService.getAllProperties(requestTokenHeader)).thenReturn(new ArrayList<Property>());
         assertEquals(HttpStatus.OK, customerController.getAllProperties(requestTokenHeader).getStatusCode());
     }
 
     @Test
     void getAllProperties_Exception() {
-        when(authorizationClient.authorizeTheRequestForCustomer(anyString())).thenReturn(false);
+        when(authorizationClient.authorizeTheRequest(anyString())).thenReturn(false);
         assertThrows(AuthorizationException.class, () -> customerController.getAllProperties(requestTokenHeader));
     }
 
     @Test
     void assignRequirements() throws AuthorizationException {
-        when(authorizationClient.authorizeTheRequestForCustomer(anyString())).thenReturn(true);
+        when(authorizationClient.authorizeTheRequest(anyString())).thenReturn(true);
         doNothing().when(customerService).assignRequirements(anyInt(), anyInt());
         assertEquals(HttpStatus.OK, customerController.assignRequirements(1, 1, requestTokenHeader).getStatusCode());
     }
 
     @Test
     void assignRequirements_Exception() {
-        when(authorizationClient.authorizeTheRequestForCustomer(anyString())).thenReturn(false);
+        when(authorizationClient.authorizeTheRequest(anyString())).thenReturn(false);
         assertThrows(AuthorizationException.class, () -> customerController.assignRequirements(1, 1, requestTokenHeader));
     }
 

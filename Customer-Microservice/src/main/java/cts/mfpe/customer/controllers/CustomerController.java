@@ -38,7 +38,7 @@ public class CustomerController {
 	public ResponseEntity<List<Requirement>> getAllRequirements(
 			@RequestHeader(value = "Authorization", required = true) String requestTokenHeader)
 			throws AuthorizationException {
-		if (authorizationClient.authorizeTheRequestForCustomer(requestTokenHeader)) {
+		if (authorizationClient.authorizeTheRequest(requestTokenHeader)) {
 			return ResponseEntity.ok(customerService.getAllRequirements());
 		}
 		throw new AuthorizationException("Not Allowed");
@@ -48,7 +48,7 @@ public class CustomerController {
 	public ResponseEntity<List<Customer>> getAllCustomers(
 			@RequestHeader(value = "Authorization", required = true) String requestTokenHeader)
 			throws AuthorizationException{
-		if (authorizationClient.authorizeTheRequestForManager(requestTokenHeader)) {
+		if (authorizationClient.authorizeTheRequest(requestTokenHeader)) {
 			return ResponseEntity.ok(customerService.getAllCustomers());
 		}
 		throw new AuthorizationException("Not Allowed");
@@ -58,7 +58,7 @@ public class CustomerController {
 	public ResponseEntity<String> createCustomer(@RequestBody @Valid Customer customer,
 			@RequestHeader(value = "Authorization", required = true) String requestTokenHeader)
 			throws Exception{
-	    if (authorizationClient.authorizeTheRequestForCustomer(requestTokenHeader)) {
+	    if (authorizationClient.authorizeTheRequest(requestTokenHeader)) {
 	    	customerService.createCustomer(customer);
 	    	return new ResponseEntity<>("Customer Created Successfully!",HttpStatus.CREATED);
 		}
@@ -83,7 +83,7 @@ public class CustomerController {
 	public ResponseEntity<List<Property>> getAllProperties(
 			@RequestHeader(value = "Authorization", required = true) String requestTokenHeader)
 			throws Exception{
-		if (authorizationClient.authorizeTheRequestForCustomer(requestTokenHeader)) {
+		if (authorizationClient.authorizeTheRequest(requestTokenHeader)) {
 			return ResponseEntity.ok(customerService.getAllProperties(requestTokenHeader));
 		}
 		throw new AuthorizationException("Not Allowed");
@@ -94,7 +94,7 @@ public class CustomerController {
 			@PathVariable("requirementId") int reqid, 
 			@RequestHeader(value = "Authorization", required = true) String requestTokenHeader)
 			throws AuthorizationException{
-		if (authorizationClient.authorizeTheRequestForCustomer(requestTokenHeader)) {
+		if (authorizationClient.authorizeTheRequest(requestTokenHeader)) {
 			customerService.assignRequirements(custid, reqid);
 			return new ResponseEntity<>("Requirement Assigned Successfully!",HttpStatus.OK);
 		}

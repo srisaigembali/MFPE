@@ -42,14 +42,14 @@ class PropertyControllerTest {
 
     @Test
     void createProperty() throws AuthorizationException {
-        when(authorizationClient.authorizeTheRequestForManager(anyString())).thenReturn(true);
+        when(authorizationClient.authorizeTheRequest(anyString())).thenReturn(true);
         doNothing().when(propertyService).createProperty(any(Property.class));
         assertEquals(HttpStatus.CREATED, propertyController.createProperty(new Property(), requestTokenHeader).getStatusCode());
     }
 
     @Test
     void createProperty_Exception() {
-        when(authorizationClient.authorizeTheRequestForCustomer(anyString())).thenReturn(false);
+        when(authorizationClient.authorizeTheRequest(anyString())).thenReturn(false);
         assertThrows(AuthorizationException.class, () -> propertyController.createProperty(new Property(), requestTokenHeader));
     }
 

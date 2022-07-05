@@ -37,19 +37,31 @@ public class ManagerController {
 	@PostMapping("/createExecutive")
 	public ResponseEntity<String> createExecutive(@RequestBody @Valid Executive executive,
 			@RequestHeader(value = "Authorization", required = true) String requestTokenHeader) throws Exception {
-		if (authorizationClient.authorizeTheRequestForManager(requestTokenHeader)) {
+		if (authorizationClient.authorizeTheRequest(requestTokenHeader)) {
 			executiveService.createExecutive(executive);
 			return new ResponseEntity<String>("Executive Created Successfully!", HttpStatus.CREATED);
 		}
 		throw new AuthorizationException("Not Allowed");
 	}
 
+	@GetMapping("/getExecutiveDetails/{id}")
+	public ResponseEntity<Executive> getExecutiveDetails(@PathVariable int id,
+			@RequestHeader(value = "Authorization", required = true) String requestTokenHeader) throws Exception {
+		Executive executive = executiveService.getExecutiveDetails(id);
+		if (executive == null) {
+			throw new CustomerNotFoundException("Executive with id " + id + " not found");
+		}
+		if (authorizationClient.authorizeTheRequest(requestTokenHeader)) {
+			return ResponseEntity.ok(executive);
+		}
+		throw new AuthorizationException("Not Allowed");
+	}
+	
 	@GetMapping("/getAllExecutives")
 	public ResponseEntity<List<Executive>> getAllExecutives(
 			@RequestHeader(value = "Authorization", required = true) String requestTokenHeader)
 			throws AuthorizationException {
-		if (authorizationClient.authorizeTheRequestForManager(requestTokenHeader)
-				|| authorizationClient.authorizeTheRequestForExecutive(requestTokenHeader)) {
+		if (authorizationClient.authorizeTheRequest(requestTokenHeader)) {
 			return ResponseEntity.ok(executiveService.getAllExecutives());
 		}
 		throw new AuthorizationException("Not Allowed");
@@ -62,8 +74,7 @@ public class ManagerController {
 		if (executives.size() == 0) {
 			throw new ExecutiveNotFoundException("Executives in locality " + locality + " not found");
 		}
-		if (authorizationClient.authorizeTheRequestForManager(requestTokenHeader)
-				|| authorizationClient.authorizeTheRequestForExecutive(requestTokenHeader)) {
+		if (authorizationClient.authorizeTheRequest(requestTokenHeader)) {
 			return ResponseEntity.ok(executives);
 		}
 		throw new AuthorizationException("Not Allowed");
@@ -73,7 +84,7 @@ public class ManagerController {
 	public ResponseEntity<List<Customer>> getAllCustomers(
 			@RequestHeader(value = "Authorization", required = true) String requestTokenHeader)
 			throws Exception {
-		if (authorizationClient.authorizeTheRequestForManager(requestTokenHeader)) {
+		if (authorizationClient.authorizeTheRequest(requestTokenHeader)) {
 			return ResponseEntity.ok(executiveService.getAllCustomers(requestTokenHeader));
 		}
 		throw new AuthorizationException("Not Allowed");
@@ -86,7 +97,7 @@ public class ManagerController {
 		if (customer == null) {
 			throw new CustomerNotFoundException("Customer with id " + id + " not found");
 		}
-		if (authorizationClient.authorizeTheRequestForManager(requestTokenHeader)) {
+		if (authorizationClient.authorizeTheRequest(requestTokenHeader)) {
 			return ResponseEntity.ok(customer);
 		}
 		throw new AuthorizationException("Not Allowed");
@@ -97,7 +108,7 @@ public class ManagerController {
 			@PathVariable("customerId") int custid,
 			@RequestHeader(value = "Authorization", required = true) String requestTokenHeader)
 			throws Exception {
-		if (authorizationClient.authorizeTheRequestForManager(requestTokenHeader)) {
+		if (authorizationClient.authorizeTheRequest(requestTokenHeader)) {
 			executiveService.assignExecutive(execid, custid, requestTokenHeader);
 			return new ResponseEntity<>("Executive Assigned Successfully!", HttpStatus.OK);
 		}

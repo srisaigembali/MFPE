@@ -10,13 +10,4 @@ public interface AuthorizationClient{
 	@PostMapping(value = "/authorize")
 	public boolean authorizeTheRequest(@RequestHeader(value = "Authorization", required = true) String requestTokenHeader);
 	
-	@PostMapping(value = "/authorize-manager")
-	public boolean authorizeTheRequestForManager(@RequestHeader(value = "Authorization", required = true) String requestTokenHeader) ;
-
-	@PostMapping(value = "/authorize-executive")
-	public boolean authorizeTheRequestForExecutive(@RequestHeader(value = "Authorization", required = true) String requestTokenHeader) ;
-
-	@PostMapping(value = "/authorize-customer")
-	public boolean authorizeTheRequestForCustomer(@RequestHeader(value = "Authorization", required = true) String requestTokenHeader) ;
-
 }

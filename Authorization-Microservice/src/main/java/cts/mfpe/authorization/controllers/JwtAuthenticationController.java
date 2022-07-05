@@ -1,8 +1,5 @@
 package cts.mfpe.authorization.controllers;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +21,6 @@ import cts.mfpe.authorization.entities.JwtResponse;
 import cts.mfpe.authorization.entities.User;
 import cts.mfpe.authorization.exceptions.AuthorizationException;
 import cts.mfpe.authorization.services.JwtUserDetailsService;
-
 import io.jsonwebtoken.ExpiredJwtException;
 
 @RestController
@@ -71,101 +67,15 @@ public class JwtAuthenticationController {
 	public boolean authorizeTheRequest(@RequestHeader(value = "Authorization", required = true) String requestTokenHeader) {
 		String jwtToken = null;
 		String userName = null;
-		boolean flag = false;
 		if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
 			jwtToken = requestTokenHeader.substring(7);
 			try {
 				userName = jwtTokenUtil.getUsernameFromToken(jwtToken);
 			} catch (IllegalArgumentException | ExpiredJwtException e) {
-				return flag;
+				return false;
 			}
 		}
-		User user = userDetailsService.getUserByName(userName);
-		List<String> roles = user.getRoles().stream()
-		        .map(role -> role.getName())
-		        .collect(Collectors.toList());
-		
-		if(roles.contains("ROLE_MANAGER") || roles.contains("ROLE_EXECUTIVE") || roles.contains("ROLE_CUSTOMER")) {
-			flag = true;
-		}
-		
-		return flag;
-
-	}
-	
-	@PostMapping(value = "/authorize-manager")
-	public boolean authorizeTheRequestForManager(@RequestHeader(value = "Authorization", required = true) String requestTokenHeader) {
-		String jwtToken = null;
-		String userName = null;
-		boolean flag = false;
-		if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-			jwtToken = requestTokenHeader.substring(7);
-			try {
-				userName = jwtTokenUtil.getUsernameFromToken(jwtToken);
-			} catch (IllegalArgumentException | ExpiredJwtException e) {
-				return flag;
-			}
-		}
-		User user = userDetailsService.getUserByName(userName);
-		List<String> roles = user.getRoles().stream()
-		        .map(role -> role.getName())
-		        .collect(Collectors.toList());
-		
-		if(roles.contains("ROLE_MANAGER")) {
-			flag = true;
-		}
-		
-		return flag;
-	}
-	
-	@PostMapping(value = "/authorize-executive")
-	public boolean authorizeTheRequestForExecutive(@RequestHeader(value = "Authorization", required = true) String requestTokenHeader) {
-		String jwtToken = null;
-		String userName = null;
-		boolean flag = false;
-		if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-			jwtToken = requestTokenHeader.substring(7);
-			try {
-				userName = jwtTokenUtil.getUsernameFromToken(jwtToken);
-			} catch (IllegalArgumentException | ExpiredJwtException e) {
-				return flag;
-			}
-		}
-		User user = userDetailsService.getUserByName(userName);
-		List<String> roles = user.getRoles().stream()
-		        .map(role -> role.getName())
-		        .collect(Collectors.toList());
-		
-		if(roles.contains("ROLE_EXECUTIVE")) {
-			flag = true;
-		}
-		
-		return flag;
-	}
-	
-	@PostMapping(value = "/authorize-customer")
-	public boolean authorizeTheRequestForCustomer(@RequestHeader(value = "Authorization", required = true) String requestTokenHeader) {
-		String jwtToken = null;
-		String userName = null;
-		boolean flag = false;
-		if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-			jwtToken = requestTokenHeader.substring(7);
-			try {
-				userName = jwtTokenUtil.getUsernameFromToken(jwtToken);
-			} catch (IllegalArgumentException | ExpiredJwtException e) {
-				return flag;
-			}
-		}
-		User user = userDetailsService.getUserByName(userName);
-		List<String> roles = user.getRoles().stream()
-		        .map(role -> role.getName())
-		        .collect(Collectors.toList());
-		
-		if(roles.contains("ROLE_CUSTOMER")) {
-			flag = true;
-		}
-		
-		return flag;
+		return userName!=null;
 	}
 	
 }
