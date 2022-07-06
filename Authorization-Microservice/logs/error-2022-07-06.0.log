@@ -269,3 +269,18 @@ org.h2.jdbc.JdbcSQLNonTransientConnectionException: The database is open in excl
 2022-07-06_08-23-32 [http-nio-8084-exec-10] ERROR c.m.a.e.GlobalExceptionHandler - User with user name srisai already exists
 2022-07-06_08-23-32 [http-nio-8084-exec-2] ERROR c.m.a.e.GlobalExceptionHandler - User with user name srisai already exists
 2022-07-06_09-46-08 [http-nio-8084-exec-2] ERROR c.m.a.e.GlobalExceptionHandler - User with user name harsh already exists
+2022-07-06_11-32-19 [restartedMain] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8084 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8084 or configure this application to listen on another port.
+
+2022-07-06_11-39-12 [http-nio-8084-exec-2] ERROR c.m.a.e.GlobalExceptionHandler - User with user name srisai already exists
