@@ -2,6 +2,8 @@ package cts.mfpe.manager.services;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,7 @@ public class ManagerServiceImpl implements ManagerService {
 	@Autowired
 	private CustomerServiceClient customerClient;
 	
+	@Transactional
 	@Override
 	public void createExecutive(Executive executive) throws Exception{
 		if(checkIfExecutiveAlreadyExists(executive.getName())) {
@@ -66,6 +69,7 @@ public class ManagerServiceImpl implements ManagerService {
 		return customer;
 	}
 
+	@Transactional
 	@Override
 	public void assignExecutive(int executiveid, int customerid, String token) throws Exception{
 		Executive executive = executiveRepo.findById(executiveid).get();

@@ -2,6 +2,8 @@ package cts.mfpe.authorization.services;
 
 import java.util.ArrayList;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -35,6 +37,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), new ArrayList<>());
 	}
 	
+	@Transactional
 	public void save(User user) throws Exception{
 		if(CheckIfUserAlreadyExists(user.getUsername())) {
 			throw new UserAlredyExistsException("User with user name "+user.getUsername()+" already exists");

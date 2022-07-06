@@ -2,6 +2,8 @@ package cts.mfpe.property.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ public class PropertyServiceImpl implements PropertyService{
 	@Autowired
 	private PropertyRepository propertyRepo;
 	
+	@Transactional
 	@Override
 	public void createProperty(Property property) {
 		propertyRepo.save(property);

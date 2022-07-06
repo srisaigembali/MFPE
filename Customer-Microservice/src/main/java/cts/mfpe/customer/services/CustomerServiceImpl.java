@@ -3,6 +3,8 @@ package cts.mfpe.customer.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +44,7 @@ public class CustomerServiceImpl implements CustomerService{
 		return customers;
 	}
 	
+	@Transactional
 	@Override
 	public void createCustomer(Customer customer) throws Exception{
 		if(checkIfCustomerAlreadyExists(customer.getName())) {
@@ -69,6 +72,7 @@ public class CustomerServiceImpl implements CustomerService{
 		return properties;
 	}
 
+	@Transactional
 	@Override
 	public void assignRequirements(int custid, int reqid) {
 		Customer customer = customerRepo.findById(custid).get();

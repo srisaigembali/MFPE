@@ -32,6 +32,7 @@ public class Customer {
 	private String emailid;
 	@NotNull(message="Contact Number cannot be null")
 	private Long contactNumber;
+	
 	@OneToMany
 	private Set<Requirement> requirements;
 }

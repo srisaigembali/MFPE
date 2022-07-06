@@ -24,4 +24,5 @@ public class Requirement {
 	private String locality;
 	@NotNull(message="Budget cannot be null")
 	private double budget;
+	
 }
