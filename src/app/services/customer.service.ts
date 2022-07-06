@@ -12,7 +12,7 @@ export class CustomerService {
   constructor(private _httpClient:HttpClient) { }
 
   createCustomer(customer:any):any{
-    return this._httpClient.post(this.customerUrl+"createCustomer", customer);
+    return this._httpClient.post(this.customerUrl+"createCustomer", customer, {responseType:'text'});
   }
 
   getAllRequirements():any{

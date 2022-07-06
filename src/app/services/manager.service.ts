@@ -12,7 +12,7 @@ export class ManagerService {
   constructor(private _httpClient:HttpClient) { }
 
   createExecutive(manager:any):any{
-    return this._httpClient.post(this.managerUrl+"createExecutive", manager);
+    return this._httpClient.post(this.managerUrl+"createExecutive", manager, {responseType:'text'});
   }
 
   getAllExecutives():any{

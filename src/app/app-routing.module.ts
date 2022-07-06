@@ -7,7 +7,10 @@ import { ManagerComponent } from './components/manager/manager.component';
 import { PropertyComponent } from './components/property/property.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AuthGuard } from './shared/auth.guard';
+import { CustomerroleGuard } from './shared/customerrole.guard';
+import { ExecutiveroleGuard } from './shared/executiverole.guard';
 import { LogoutGuard } from './shared/logout.guard';
+import { ManagerroleGuard } from './shared/managerrole.guard';
 
 const routes: Routes = [
   {
@@ -26,22 +29,22 @@ const routes: Routes = [
   {
     path:'property',
     component:PropertyComponent,
-    canActivate:[AuthGuard]
+    canActivate:[AuthGuard, ManagerroleGuard]
   },
   {
     path:'customer',
     component:CustomerComponent,
-    canActivate:[AuthGuard]
+    canActivate:[AuthGuard, CustomerroleGuard]
   },
   {
     path:'executive',
     component:ExecutiveComponent,
-    canActivate:[AuthGuard]
+    canActivate:[AuthGuard, ExecutiveroleGuard]
   },
   {
     path:'manager',
     component:ManagerComponent,
-    canActivate:[AuthGuard]
+    canActivate:[AuthGuard, ManagerroleGuard]
   }
 ];
 

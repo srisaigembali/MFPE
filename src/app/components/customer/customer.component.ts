@@ -29,6 +29,11 @@ export class CustomerComponent implements OnInit {
     this.service.createCustomer(this.customer).subscribe((res:any)=>{
       this.service.data=res;
       console.log(res);
+      alert("Customer Created Successfully!");
+    },
+    (error:any)=>{
+      console.log(error);
+      alert("Customer Creation Failed!");
     })
   }
 
@@ -49,6 +54,15 @@ export class CustomerComponent implements OnInit {
   assignRequirements(){
     this.service.assignRequirements(this.custid, this.reqid).subscribe((res:any)=>{
       console.log(res);
+    },
+      (error:any)=>{
+      console.log(error);
+      if(error.status==200){
+        alert("Requirement Assigned Successfully!");
+      }
+      else{
+        alert("Requirement Assignment Failed!");
+      }
     })
   }
 

@@ -25,6 +25,11 @@ export class PropertyComponent implements OnInit {
     this.service.createProperty(this.property).subscribe((res:any)=>{
       this.service.data=res;
       console.log(res);
+      alert("Property Created Successfully!");
+    },
+    (error:any)=>{
+      console.log(error);
+      alert("Property Creation Failed!");
     })
   }
 

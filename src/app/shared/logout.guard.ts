@@ -11,6 +11,7 @@ export class LogoutGuard implements CanActivate {
 
   canActivate(){
     this.service.logout();
+    alert("Session Expired. Login Again!!");
     return true;
   }
   

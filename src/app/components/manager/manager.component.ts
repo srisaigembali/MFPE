@@ -31,6 +31,11 @@ export class ManagerComponent implements OnInit {
     this.service.createExecutive(this.executive).subscribe((res:any)=>{
       this.service.data=res;
       console.log(res);
+      alert("Executive Created Successfully!");
+    },
+    (error:any)=>{
+      console.log(error);
+      alert("Executive Creation Failed!");
     })
   }
 
@@ -58,6 +63,15 @@ export class ManagerComponent implements OnInit {
   assignExecutive(){
     this.service.assignExecutive(this.execid, this.custid).subscribe((res:any)=>{
       console.log(res);
+    },
+      (error:any)=>{
+      console.log(error);
+      if(error.status==200){
+        alert("Customer Assigned Successfully!");
+      }
+      else{
+        alert("Customer Assignment Failed!");
+      }
     })
   }
 

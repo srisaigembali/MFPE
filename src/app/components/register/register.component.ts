@@ -10,6 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class RegisterComponent implements OnInit {
 
+  selRole!:string;
   user:User = new User('','');
 
   constructor(private service:AuthService, private router:Router) { }
@@ -20,8 +21,14 @@ export class RegisterComponent implements OnInit {
   register(){
     this.service.register(this.user).subscribe((res:any)=>{
       this.service.data=res;
+      this.service.role = this.selRole;
       console.log(res);
+      alert("Registration successful!");
       this.router.navigate(['login']);
+    },
+    (error:any)=>{
+      console.log(error);
+      alert("Registration Failed!");
     })
   }
 

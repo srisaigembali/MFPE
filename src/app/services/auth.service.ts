@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 export class AuthService {
 
   data:any;
+  role!:String;
+  role1!:String;
   authurl:string = "http://localhost:8084/auth/";
 
   constructor(private _httpClient:HttpClient, private router:Router) { }
@@ -32,4 +34,22 @@ export class AuthService {
     localStorage.clear();
     this.router.navigateByUrl('/login');
   }
+
+  validatingRole(){
+    console.log(this.role);
+    return this.role==this.role1;
+  }
+
+  hasRoleManager(){
+    return this.role=="Manager";
+  }
+
+  hasRoleExecutive(){
+    return this.role=="Executive";
+  }
+
+  hasRoleCustomer(){
+    return this.role=="Customer";
+  }
+
 }

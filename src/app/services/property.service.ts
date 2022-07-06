@@ -12,7 +12,7 @@ export class PropertyService {
   constructor(private _httpClient:HttpClient) { }
 
   createProperty(property:any):any{
-    return this._httpClient.post(this.propertyUrl+"createProperty", property);
+    return this._httpClient.post(this.propertyUrl+"createProperty", property, {responseType:'text'});
   }
 
   getAllProperties():any{
